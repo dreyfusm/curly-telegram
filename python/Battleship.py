@@ -42,7 +42,7 @@ for turn in range(4):
 
    # guess_row = int(raw_input("Guess Row:"))
    # guess_col = int(raw_input("Guess Col:"))
-    
+   
     guess_row = ship1_row
     guess_col = ship1_col
 
