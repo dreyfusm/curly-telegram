@@ -1,95 +1,117 @@
 #things to add
 ##-play again feature
+##  -- done by a while loop == check to see if play_again is still yes.. if changes, break loop and end
+##  -- reset function to reset board and select new coords
 ##-second ship
 ## -ships bigger than 1 space
 ## -more turns.. bigger board?..
 ## -let user pick amount of ships
 from random import randint
 import sys
+
 #initialize board
 
 def create_board():
-    board = []
+    """creates board"""
+    newboard = []
     for n in range(5):
-        board.append(["0"] * 5)
-    return board
+        newboard.append(["0"] * 5)
+    return newboard
+
 #define functions
 def print_board(board):
+    """prints board"""
     for n in board:
         print ' '.join(n)
 
 def rand_row(board1):
-    rand_row = randint(0,len(board1) - 1)
-    return rand_row
+    """creates random row number"""
+    random_row = randint(1, len(board1) - 1)
+    return random_row
 
 def rand_col(board2):
-    rand_col = randint(0,len(board2) - 1)
-    return rand_col
+    """creates random column number"""
+    rand_column = randint(1, len(board2) - 1)
+    return rand_column
 
-#left off here
-def play_again(input):
-    if play_again == "Y" or play_again == "Yes":
-        return True
-    elif play_again == "N" or play_again == "No":
-        return True
-    else:
-        return False
-
-#Generates random coordinates
-board = create_board()
-ship1_row = int(rand_row(board))
-ship1_col = int(rand_col(board))
-
+print ""
+print ""
+print "Welcome to Battle Ship. If you can guess where my ship is in four turns, you win!"
+print ""
+print ""
 
 
 #Running logic
-for turn in range(4):
-    #Ask user to guess
-    print "ship row " + str(ship1_row)
-    print "ship row " + str(ship1_col)
 
-   # guess_row = int(raw_input("Guess Row:"))
-   # guess_col = int(raw_input("Guess Col:"))
-
-    guess_row = ship1_row
-    guess_col = ship1_col
-
-    if guess_row == ship1_row and guess_col == ship1_col:
-        print "It's a hit You win!"
-        board[ship1_row][ship1_col] = "X"
-        print_board(board)
-        #ask user if they want to play again
+playagain = 'yes'
+while playagain == 'yes':
+    print "debug"
+    board = create_board()
+    ship1_row = int(rand_row(board))
+    ship1_col = int(rand_col(board))
+    print_board(board)
+    for turn in range(4):
+        #Ask user to guess
+        print ""
+        print "ship row " + str(ship1_row)
+        print "ship row " + str(ship1_col)
+        print "You have " + str((range(4)[3] + 1) - turn) + " turns left."
+        print "~~~~~~~~~~~~~~"
         while True:
-            try: #validate
-                response = raw_input("Would you like to play again? (Y or N)")
-                str(response.upper())
-                if isinstance(response, str) and response is "YES" or response is "NO" \
-                or response is "N" or response is "Y" or response is "y" or response is "n"\
-                or response is "yes" or response is "no": #circle back to clean up. figure out case insenstive conparsion
-                    break
-                else:
-                #we're happy with the value given.
-                #we're ready to exit the loop.
-                    print "Please choose Y or N."
-                    continue
+            try:
+                guess_row = -3
+                while guess_row < 1 or guess_row > 5:
+                    try:
+                        guess_row = int(raw_input("Guess Row:"))
+                        if guess_row < 1 or guess_row > 5:
+                            print "Invalid input"
+                        else:
+                            break
+                    except ValueError:
+                        print "Input not valid"
+                guess_col = -3
+                while guess_col < 1 or guess_col > 5:
+                    try:
+                        guess_col = int(raw_input("Guess Col:"))
+                        if guess_col < 1 or guess_col > 5:
+                            print "Invalid input"
+                        else:
+                            break
+                    except ValueError:
+                        print "Input not valid"
             except ValueError:
-                print "You broke it"
-                sys.exit("womp womp")
-        if response == "N" or response == "No" or response == "n" or response == "no":
-            sys.exit("Thanks for playing!") #tested
-        elif response == "Y" or response == "Yes" or response == "y" or response == "yes":
-            print "invoke play_again method" #Debug
-            play_again(response)
-        else:
-            print "Invalid response"
-    else: #continue game
-        if turn != 4:
-            print "Miss"
-            board[guess_row][guess_col] = "*"
+                print "Not a valid input."
+            break
+        #Need to validate inputs (out of range inputs and letters)
+        print "~~~~~~~~~~~~~~"
+
+        if guess_row == ship1_row and guess_col == ship1_col:
+            print "It's a hit You win!"
+            board[ship1_row - 1][ship1_col - 1] = "X"
             print_board(board)
-        else:
-            print "Game over"
-            print "Here is where my ship was!"
-            board[ship1_row][ship1_col] = "X"
-            print_board(board)
-turn + 1
+            #ask user if they want to play again
+            response = raw_input("Would you like to play again?")
+            playagain = response
+            break
+        else: #continue game
+            if turn != 4:
+                print "Miss!"
+                print "~~~~~~~~~~~~~~"
+                if guess_col == 0:
+                    board[guess_row - 1][guess_col] = "*"
+                elif guess_row == 0:
+                    board[guess_row][guess_col - 1] = "*"
+                elif guess_col == 0 and guess_row == 0:
+                    board[guess_row][guess_col] = "*"
+                else:
+                    board[guess_row - 1][guess_col - 1] = "*"
+                print_board(board)
+                print "~~~~~~~~~~~~~~"
+            else: #end game
+                print "~~~~~~~~~~~~~~"
+                print "Game over"
+                print "Here is where my ship was!"
+                board[ship1_row][ship1_col] = "X"
+                print "~~~~~~~~~~~~~~"
+                print_board(board)
+print "Thanks for playing"
