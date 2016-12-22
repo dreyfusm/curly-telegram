@@ -101,6 +101,8 @@ while play_again == 'yes':
             print_board(board)
             #ask user if they want to play again
             response = raw_input("Would you like to play again?")
+            while response.lower() not in {'y', 'n', 'yes', 'no'}:  # Fill in the condition (before the colon)
+                response = raw_input("Please enter yes or no: ")
             playagain = response
             break
         else: #continue game
