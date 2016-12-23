@@ -15,7 +15,9 @@ hostnum = len(env.hosts)
 title1 = ["Users below currently have access to the system"]
 title2 = ["Users below currently have access to the system"]
 
-#Prints users who have access to the system
+#Prints users who have access to the system 
+#Note about fabric functions: They will iteriate through like a for loop and repeat
+#if you want to perserve variables you must make them global
 def printusers():
     global turn
     global csvlist
