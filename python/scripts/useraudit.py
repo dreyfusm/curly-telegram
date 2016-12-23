@@ -9,8 +9,6 @@ env.password = ''
 env.hosts = []
 
 #declaring global variables
-#one for the csvlist that we will export
-#turn keeps track of how many times we've looped through
 csvlist = []
 turn = 0
 hostnum = len(env.hosts)
@@ -29,7 +27,7 @@ def printusers():
     owner = (sudo(str("ls -l /home | awk '{print $3}'")))
     directory = (sudo(str("ls -l /home | awk '{print $9}'")))
 
-#parses users into lists to be compared
+#formats strings so they can be compared
     newowner = owner.splitlines()
     newdirectory = directory.splitlines()
 
@@ -72,7 +70,7 @@ def printusers():
 
     turn += 1
     print turn
-    #ones the number of turns is equal to the length of hosts in the list we will create the CSV
+    #if turn == end of env.list then it prints the CSV
     if turn == hostnum:
         print "Exporting all to CSV"
         res = csvlist
