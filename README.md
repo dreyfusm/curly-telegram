@@ -1,3 +1,3 @@
 # curly-telegram
 
-Small practice python projects and other assorted stuff
+Small practice python projects and scripts I've created for work
