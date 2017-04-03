@@ -1,6 +1,8 @@
 # Mike Dreyfus
 #purpose of script. Grab the output of /etc/home, print users who are still active
-# and of those active users, print who has sudo access
+#and of those active users, print who has sudo access. Needed to audit users who have left the
+#company but still had access on systems. Finding that some puppet isn't running on some boxes and 
+#is not updating user access.
 import csv
 from pexpect import pxssh
 
@@ -38,6 +40,8 @@ for i in server_list:
         s.sendline('cat /etc/group| grep wheel |cut -d: -f4')  #grab users in wheel group
         s.prompt()
         sudolist = s.before
+        s.sendline()
+
         newowner = owner.splitlines()  #parse lists to be sortable
         newdirectory = directory.splitlines()
         list_common = []  #Sorts both lists. If the owner name is in the directory name, the user exists
